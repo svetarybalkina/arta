@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9d9c9"/>
+      <stop offset="1" stop-color="#b8bda5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg3)"/>
+  <path d="M0 180 L130 130 L260 180 L390 130 L520 180 L650 130 L800 180" stroke="#8f977a" stroke-width="56" fill="none" opacity="0.45"/>
+  <path d="M0 340 L120 290 L240 340 L360 290 L480 340 L600 290 L720 340 L800 320" stroke="#c1c7ad" stroke-width="46" fill="none" opacity="0.62"/>
+  <path d="M0 500 L145 450 L290 500 L435 450 L580 500 L725 450 L800 470" stroke="#a5ad8d" stroke-width="52" fill="none" opacity="0.58"/>
+  <text x="36" y="72" font-family="Trebuchet MS" font-size="44" fill="#4f5742">Field Style</text>
+</svg>

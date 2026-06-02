@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #d6d9c8;
+  --foreground: #2f3828;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: "Trebuchet MS", "Segoe UI", sans-serif;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+.font-heading {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.font-logo-hand {
+  font-family: "Brush Script MT", "Segoe Script", "Comic Sans MS", cursive;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.bg-camo {
+  background:
+    radial-gradient(56% 40% at 16% 24%, rgba(181, 188, 163, 0.62) 0%, rgba(181, 188, 163, 0) 65%),
+    radial-gradient(38% 26% at 78% 18%, rgba(198, 203, 181, 0.7) 0%, rgba(198, 203, 181, 0) 66%),
+    radial-gradient(42% 34% at 66% 72%, rgba(169, 176, 151, 0.58) 0%, rgba(169, 176, 151, 0) 68%),
+    radial-gradient(30% 22% at 10% 72%, rgba(145, 153, 128, 0.32) 0%, rgba(145, 153, 128, 0) 74%),
+    radial-gradient(27% 20% at 92% 68%, rgba(180, 187, 166, 0.33) 0%, rgba(180, 187, 166, 0) 72%),
+    radial-gradient(24% 18% at 52% 44%, rgba(154, 162, 141, 0.28) 0%, rgba(154, 162, 141, 0) 72%),
+    linear-gradient(150deg, #dee1cf, #d2d6c3 40%, #cfd4bf);
+}
+
+.hero {
+  background:
+    radial-gradient(100% 80% at 6% 4%, rgba(194, 199, 178, 0.6), rgba(194, 199, 178, 0)),
+    linear-gradient(135deg, rgba(222, 225, 209, 0.94), rgba(204, 210, 191, 0.9));
+  box-shadow: inset 0 0 30px rgba(122, 128, 106, 0.23);
+}
+
+.panel {
+  @apply rounded-xl border border-[#60715c] bg-[#223425] p-3;
+}
+
+.btn-military {
+  @apply rounded-lg border border-[#8a9370] bg-[#a7af8e] px-4 py-2 font-semibold text-[#48503c] transition hover:brightness-105 disabled:opacity-50;
+}
+
+.btn-muted {
+  @apply rounded-lg border border-[#9ba48a] bg-[#c8ceb4] px-4 py-2 text-[#525a45] transition hover:brightness-105;
+}
+
+.clip-card-cartoon {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 3px solid #8d9478;
+  background: #f3f1e4;
+  padding: 7px;
+  box-shadow:
+    0 2px 0 rgba(121, 128, 95, 0.95),
+    0 8px 14px rgba(76, 84, 62, 0.18);
+}
+
+.ak-mag {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 6px;
+  border-radius: 10px;
+  border: 1px solid #78886f;
+  background: #263326;
+  padding: 10px;
+}
+
+.bullet {
+  height: 26px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #51411f 0%, #d3af4a 50%, #725b26 100%);
+  opacity: 0.2;
+  animation: fill-bullet 1.8s infinite ease-in-out;
+}
+
+@keyframes fill-bullet {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(3px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,65 +1,95 @@
-import Image from "next/image";
+﻿"use client";
+
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { AuthModal } from "@/components/AuthModal";
+import { HallOfFame } from "@/components/HallOfFame";
+import { PricingSection } from "@/components/PricingSection";
+import { GenerationStudio } from "@/components/GenerationStudio";
 
 export default function Home() {
+  const [authOpen, setAuthOpen] = useState(false);
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [freeLeft, setFreeLeft] = useState(0);
+  const [balance, setBalance] = useState(0);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [highlightPricing, setHighlightPricing] = useState(false);
+  const [hallRefreshToken, setHallRefreshToken] = useState(0);
+  const router = useRouter();
+  const pricingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const focusPricing = () => {
+    const block = document.getElementById("pricing");
+    block?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setHighlightPricing(true);
+    if (pricingTimer.current) clearTimeout(pricingTimer.current);
+    pricingTimer.current = setTimeout(() => setHighlightPricing(false), 1700);
+  };
+
+  const handleSelectPlan = (count: number) => {
+    localStorage.setItem("pending_plan_count", String(count));
+    if (!userEmail) {
+      setAuthOpen(true);
+      return;
+    }
+    router.push(`/payment-test?count=${count}`);
+  };
+
+  useEffect(() => {
+    if (!userEmail) return;
+    const pendingPlan = Number(localStorage.getItem("pending_plan_count") ?? "0");
+    if (pendingPlan > 0) {
+      localStorage.removeItem("pending_plan_count");
+      router.push(`/payment-test?count=${pendingPlan}`);
+    }
+  }, [userEmail, router]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="min-h-screen bg-camo px-4 py-6 text-[#2f3828]">
+      <main className="mx-auto w-full max-w-6xl">
+        <section className="hero rounded-2xl border border-[#6f7d68] p-6 md:p-10">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h1 className="font-logo-hand mt-2 text-5xl leading-tight text-[#394231] md:text-7xl">АРТа</h1>
+              <p className="mt-1 text-xs tracking-[0.14em] text-[#8e9578]">любимая твоя</p>
+              <p className="mt-3 max-w-xl text-lg text-[#46503d]">Создай прикольное фото в мультипликационном стиле</p>
+            </div>
+            <div className="text-right">
+              {userEmail ? <p className="text-sm font-semibold text-[#46503d]">Баланс: {balance}</p> : null}
+              {isAdmin ? <Link href="/admin" className="text-sm underline">Админ-панель</Link> : null}
+            </div>
+          </div>
+          <button className="btn-military mt-6" onClick={() => setAuthOpen(true)}>
+            Регистрация / Вход
+          </button>
+        </section>
+
+        <HallOfFame refreshToken={hallRefreshToken} />
+        <GenerationStudio
+          onNeedAuth={() => setAuthOpen(true)}
+          onNeedPricing={focusPricing}
+          onHallUpdated={() => setHallRefreshToken((v) => v + 1)}
+          onProfileChange={(payload) => {
+            setPromoApplied(payload.promoApplied);
+            setFreeLeft(payload.freeLeft);
+            setBalance(payload.balance);
+            setUserEmail(payload.userEmail);
+            setIsAdmin(payload.isAdmin);
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        <PricingSection promoApplied={promoApplied} freeLeft={freeLeft} highlighted={highlightPricing} onSelectPlan={handleSelectPlan} />
       </main>
+
+      <footer className="mx-auto mt-8 w-full max-w-6xl border-t border-[#97a287] pt-4 text-sm text-[#4c5641]">
+        <div className="flex flex-wrap gap-4">
+          <Link href="/oferta" className="underline">Публичная оферта</Link>
+          <Link href="/privacy" className="underline">Политика конфиденциальности</Link>
+        </div>
+      </footer>
+
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onAuthSuccess={() => window.location.reload()} />
     </div>
   );
 }
