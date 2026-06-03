@@ -2,16 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-const fallbackCards = [
-  { src: "/hall-seed/hof-1.jpg", label: "Патрульная" },
-  { src: "/hall-seed/hof-2.jpg", label: "Тихий пост" },
-  { src: "/hall-seed/hof-3.jpg", label: "Полевая зарисовка" },
-  { src: "/hall-seed/hof-4.jpg", label: "Вечерний дозор" },
-  { src: "/hall-seed/hof-5.jpg", label: "Ночной рубеж" },
-  { src: "/hall-seed/hof-6.jpg", label: "Марш-бросок" },
-  { src: "/hall-seed/hof-7.png", label: "Смена караула" },
-];
+import { hallSeedCards } from "@/lib/hall-seed";
 
 const cardScatter = [
   { rotate: -7, mt: 12, mb: 4 },
@@ -24,7 +15,7 @@ const cardScatter = [
 ];
 
 export function HallOfFame({ refreshToken = 0 }: { refreshToken?: number }) {
-  const [cards, setCards] = useState(fallbackCards);
+  const [cards, setCards] = useState(hallSeedCards);
 
   useEffect(() => {
     const load = async () => {
